@@ -20,8 +20,6 @@ router.get(
        getAuthorById(req,res);
     });
 
-    
-
 router.post("/", [
     body("name").notEmpty().withMessage("Name is required"),
     body("surname").notEmpty().withMessage("Surname is required"),
