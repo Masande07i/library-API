@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { createAuthor, getAllAuthors, getAuthorById , } from "../controllers/authors";
+import { createAuthor, getAllAuthors, getAuthorById , updateAuthor } from "../controllers/authors";
 import { body, param, validationResult } from "express-validator";
 
 export const router = Router();
@@ -30,3 +30,19 @@ router.post("/", [
     }
    createAuthor(req,res);
 });
+
+router.put(
+    "/:id",
+    [
+        param("id").isInt().withMessage("ID must be an integer"),
+        body("name").notEmpty().withMessage("Name is required"),
+        body("surname").notEmpty().withMessage("Surname is required"),
+    ],
+    (req: Request, res: Response) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        updateAuthor(req, res);
+    }
+);

@@ -29,3 +29,20 @@ export const createAuthor = (req: Request, res: Response) => {
 
     res.status(201).json(newAuthor);
 };
+
+export const updateAuthor = (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { name, surname } = req.body;
+
+    const author = authors.find((author) => author.id === Number(id));
+
+    if (!author) {
+        return res.status(404).json({ message: "Author not found" });
+    }
+
+    author.name = name;
+    author.surname = surname;
+
+    res.status(200).json(author);
+};
+
