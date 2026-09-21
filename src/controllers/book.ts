@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { books } from "../models/book";
+import { books, Book } from "../models/book";
+import { authors } from "../models/author";
 
 export const getAllBooks = (req: Request, res: Response) => {
     res.status(200).json(books);
@@ -13,6 +14,50 @@ export const getBookById = (req: Request, res: Response) => {
     if (!book) {
         return res.status(404).json({ message: "Book not found" });
     }
+
+    res.status(200).json(book);
+};
+
+export const createBook = (req: Request, res: Response) => {
+    const { title, year, authorId } = req.body;
+
+    const author = authors.find((author) => author.id === Number(authorId));
+
+    if (!author) {
+        return res.status(404).json({ message: "Author not found" });
+    }
+
+    const newBook: Book = {
+        id: books.length + 1,
+        title,
+        year,
+        authorId: Number(authorId)
+    };
+
+    books.push(newBook);
+
+    res.status(201).json(newBook);
+};
+
+export const updateBook = (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { title, year, authorId } = req.body;
+
+    const book = books.find((book) => book.id === Number(id));
+
+    if (!book) {
+        return res.status(404).json({ message: "Book not found" });
+    }
+
+    const author = authors.find((author) => author.id === Number(authorId));
+
+    if (!author) {
+        return res.status(404).json({ message: "Author not found" });
+    }
+
+    book.title = title;
+    book.year = year;
+    book.authorId = Number(authorId);
 
     res.status(200).json(book);
 };
