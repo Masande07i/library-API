@@ -3,7 +3,7 @@ import { books, Book } from "../models/book";
 import { authors } from "../models/author";
 
 export const getAllBooks = (req: Request, res: Response) => {
-    const { title, year, authorId } = req.query;
+    const { title, year, authorId, sort, page, limit } = req.query;
 
     let filteredBooks = books;
 
@@ -24,9 +24,23 @@ export const getAllBooks = (req: Request, res: Response) => {
             (book) => book.authorId === Number(authorId)
         );
     }
+        if (sort === "year") {
+        filteredBooks.sort((a, b) => Number(a.year) - Number(b.year));
+    }
 
-    res.status(200).json(filteredBooks);
-};
+    if (sort === "-year") {
+        filteredBooks.sort((a, b) => Number(b.year) - Number(a.year));
+    }
+    const pageNumber = Number(page) || 1;
+    const limitNumber = Number(limit) || 10;
+
+    const startIndex = (pageNumber - 1) * limitNumber;
+    const endIndex = startIndex + limitNumber;
+
+filteredBooks = filteredBooks.slice(startIndex, endIndex);
+
+        res.status(200).json(filteredBooks);
+    };
 
 export const getBookById = (req: Request, res: Response) => {
     const { id } = req.params;
