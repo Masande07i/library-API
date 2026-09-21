@@ -3,7 +3,29 @@ import { books, Book } from "../models/book";
 import { authors } from "../models/author";
 
 export const getAllBooks = (req: Request, res: Response) => {
-    res.status(200).json(books);
+    const { title, year, authorId } = req.query;
+
+    let filteredBooks = books;
+
+    if (title) {
+        filteredBooks = filteredBooks.filter((book) =>
+            book.title.toLowerCase().includes(String(title).toLowerCase())
+        );
+    }
+
+    if (year) {
+        filteredBooks = filteredBooks.filter(
+            (book) => book.year === Number(year)
+        );
+    }
+
+    if (authorId) {
+        filteredBooks = filteredBooks.filter(
+            (book) => book.authorId === Number(authorId)
+        );
+    }
+
+    res.status(200).json(filteredBooks);
 };
 
 export const getBookById = (req: Request, res: Response) => {
