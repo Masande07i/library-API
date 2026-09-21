@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { authors, Author } from "../models/author";
+import { books } from "../models/book";
 
 export const getAllAuthors = (req: Request, res: Response) => {
     res.status(200).json(authors);
@@ -60,3 +61,5 @@ export const deleteAuthor = (req: Request, res: Response) => {
 
     res.status(200).json(deletedAuthor[0]);
 };
+
+

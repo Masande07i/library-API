@@ -61,3 +61,19 @@ export const updateBook = (req: Request, res: Response) => {
 
     res.status(200).json(book);
 };
+
+export const deleteBook = (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const bookIndex = books.findIndex(
+        (book) => book.id === Number(id)
+    );
+
+    if (bookIndex === -1) {
+        return res.status(404).json({ message: "Book not found" });
+    }
+
+    const deletedBook = books.splice(bookIndex, 1);
+
+    res.status(200).json(deletedBook[0]);
+};
