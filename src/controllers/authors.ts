@@ -20,6 +20,16 @@ export const getAuthorById = (req: Request, res: Response) => {
 export const createAuthor = (req: Request, res: Response) => {
     const { name, surname } = req.body;
 
+    const existingAuthor = authors.find(
+        (author) =>
+            author.name.toLowerCase() === name.toLowerCase() &&
+            author.surname.toLowerCase() === surname.toLowerCase()
+    );
+
+    if (existingAuthor) {
+        return res.status(409).json({ message: "Author already exists" });
+    }
+
     const newAuthor: Author = {
         id: authors.length + 1,
         name,

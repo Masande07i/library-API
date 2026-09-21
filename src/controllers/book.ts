@@ -54,11 +54,20 @@ export const getBookById = (req: Request, res: Response) => {
     res.status(200).json(book);
 };
 
+
 export const createBook = (req: Request, res: Response) => {
     const { title, year, authorId } = req.body;
 
-    const author = authors.find((author) => author.id === Number(authorId));
+    const existingBook = books.find(
+        (book) => book.title === title
+    );
 
+    if (existingBook) {
+        return res.status(409).json({ message: "Book already exists" });
+    }
+
+    const author = authors.find((author) => author.id === Number(authorId));
+    
     if (!author) {
         return res.status(404).json({ message: "Author not found" });
     }
