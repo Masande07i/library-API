@@ -11,8 +11,8 @@ app.use(express.json())
 app.use(bodyParser.json())
 
 app.use(loggerMiddleware)
-app.use("/v1/authors" , router)
-app.use("/v1/books", bookRouter)
+app.use("/authors" , router)
+app.use("/books", bookRouter)
 
 app.listen(PORT , () =>{
     console.log(`Server is running on http://localhost:${PORT}`)

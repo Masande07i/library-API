@@ -62,4 +62,18 @@ export const deleteAuthor = (req: Request, res: Response) => {
     res.status(200).json(deletedAuthor[0]);
 };
 
+export const getAuthorBooks = (req: Request, res: Response) => {
+    const { id } = req.params;
 
+    const author = authors.find((author) => author.id === Number(id));
+
+    if (!author) {
+        return res.status(404).json({ message: "Author not found" });
+    }
+
+    const authorBooks = books.filter(
+        (book) => book.authorId === Number(id)
+    );
+
+    res.status(200).json(authorBooks);
+};
