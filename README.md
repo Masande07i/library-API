@@ -118,7 +118,6 @@ Example request:
 ```json
 {
   "title": "Harry Potter",
-  "isbn": "9780747532699",
   "year": 1997,
   "authorId": 1
 }
